@@ -5,6 +5,8 @@ from django.db import models
 # Create your models here.
 class Category(models.Model):
     category_name = models.CharField(max_length=100, help_text='type of post category')
+    created_at = models.DateTimeField(auto_now_add=True, help_text='category added date')
+    updated_at = models.DateTimeField(auto_now_add=True, help_text='category updated date')
 
     def __str__(self):
         return self.category_name
