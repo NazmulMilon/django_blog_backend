@@ -17,7 +17,7 @@ class Post(models.Model):
     author_name = models.ForeignKey(User, on_delete=models.CASCADE, help_text='blogs writer name')
     category_name = models.ForeignKey(Category, on_delete=models.CASCADE, help_text='foreignkey relationship with '
                                                                                     'Category')
-    description = models.TextField(help_text='body of a blog post')
+    description = models.TextField(help_text='body of a single blog post')
     created_at = models.DateTimeField(auto_now_add=True, help_text='blog written date')
     updated_at = models.DateTimeField(auto_now_add=True, help_text='if any update needed')
 
