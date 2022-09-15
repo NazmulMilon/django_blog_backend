@@ -7,3 +7,9 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         # fields = '__all__'
         exclude = ['description']
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'

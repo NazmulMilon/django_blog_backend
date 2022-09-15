@@ -1,45 +1,85 @@
-from django.http import HttpResponse, JsonResponse
-from .models import Post
-from .serializers import PostSerializer
+from .models import Post, Category
+from .serializers import PostSerializer, CategorySerializer
+from django.http import Http404
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 
+class PostList(APIView):
+    """List all post or create posts"""
 
-def post_list(request):
-    """
-    list all posts or create posts
-    """
-    if request.method == 'GET':
+    def get(self, request):
         obj = Post.objects.all()
         serialize = PostSerializer(obj, many=True)
-        return JsonResponse(serialize.data, safe=False)
+        return Response(serialize.data)
 
-    elif request.method == 'POST':
-
-        serialize = PostSerializer(data=data)
+    def post(self, request):
+        serialize = PostSerializer(data=request.data)
         if serialize.is_valid():
             serialize.save()
-            return JsonResponse(serialize.data, status=201)
-        return JsonResponse(serialize.errors, status=400)
+            return Response(serialize.data, status=status.HTTP_201_CREATED)
+        return Response(serialize.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def post_detail(request, pk):
-    """ retrieve, update or delete code for posts"""
 
-    try:
-        obj = Post.objects.get(pk=pk)
-    except Post.DoesNotExist:
-        return HttpResponse(status=404)
 
-    if request.method == 'GET':
-        serialize = PostSerializer(obj)
-        return JsonResponse(serialize.data)
-    elif request.method == 'PUT':
-        serialize = PostSerializer(obj, data=data)
-        if serialize.is_valid():
-            serialize.save()
-            return JsonResponse(serialize.data)
-        return JsonResponse(serialize.errors, status=400)
 
-    elif request.method == 'DELETE':
-        obj.delete()
-        return HttpResponse(status=204)
+# from django.http import HttpResponse, JsonResponse
+# from .models import Post, Category
+# from .serializers import PostSerializer, CategorySerializer
+#
+#
+# def post_list(request):
+#     """
+#     list all posts or create posts
+#     """
+#     if request.method == 'GET':
+#         obj = Post.objects.all()
+#         serialize = PostSerializer(obj, many=True)
+#         return JsonResponse(serialize.data, safe=False)
+#
+#     elif request.method == 'POST':
+#
+#         serialize = PostSerializer(data=data)
+#         if serialize.is_valid():
+#             serialize.save()
+#             return JsonResponse(serialize.data, status=201)
+#         return JsonResponse(serialize.errors, status=400)
+#
+#
+# def post_detail(request, pk):
+#     """ retrieve, update or delete code for posts"""
+#
+#     try:
+#         obj = Post.objects.get(pk=pk)
+#     except Post.DoesNotExist:
+#         return HttpResponse(status=404)
+#
+#     if request.method == 'GET':
+#         serialize = PostSerializer(obj)
+#         return JsonResponse(serialize.data)
+#     elif request.method == 'PUT':
+#         serialize = PostSerializer(obj, data=data)
+#         if serialize.is_valid():
+#             serialize.save()
+#             return JsonResponse(serialize.data)
+#         return JsonResponse(serialize.errors, status=400)
+#
+#     elif request.method == 'DELETE':
+#         obj.delete()
+#         return HttpResponse(status=204)
+#
+#
+# def category_list(request):
+#     if request.method == 'GET':
+#         obj = Category.objects.all()
+#         serialize = CategorySerializer(obj, many=True)
+#         return JsonResponse(serialize.data, safe=False)
+#     elif request.method == 'POST':
+#         serialize = CategorySerializer(data=data)
+#         if serialize.is_valid():
+#             serialize.save()
+#             return JsonResponse(serialize.data, status=201)
+#         return JsonResponse(serialize.errors, status=400)
+
