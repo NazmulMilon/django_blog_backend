@@ -24,6 +24,7 @@ class PostList(APIView):
 
 class PostDetail(APIView):
     """ retrieve, update and delete posts """
+
     def get_object(self, pk):
         try:
             return Post.objects.get(id=pk)
@@ -48,6 +49,19 @@ class PostDetail(APIView):
         obj.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+class CategoryList(APIView):
+    def get(self, request):
+        obj = Category.objects.all()
+        serialize = CategorySerializer(obj, many=True)
+        return Response(serialize.data)
+
+    def post(self, request):
+        serialize = CategorySerializer(data=request.data)
+        if serialize.is_valid():
+            serialize.save()
+            return Response(serialize.data, status=status.HTTP_201_CREATED)
+        return Response(serialize.errors, status=status.HTTP_400_BAD_REQUEST)
 
 # from django.http import HttpResponse, JsonResponse
 # from .models import Post, Category
@@ -106,4 +120,3 @@ class PostDetail(APIView):
 #             serialize.save()
 #             return JsonResponse(serialize.data, status=201)
 #         return JsonResponse(serialize.errors, status=400)
-

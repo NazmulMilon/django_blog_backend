@@ -6,7 +6,7 @@ from django.db import models
 class Category(models.Model):
     category_name = models.CharField(max_length=100, help_text='type of post category')
     created_at = models.DateTimeField(auto_now_add=True, help_text='category added date')
-    updated_at = models.DateTimeField(auto_now_add=True, help_text='category updated date')
+    updated_at = models.DateTimeField(auto_now=True, help_text='category updated date')
 
     def __str__(self):
         return self.category_name
@@ -19,7 +19,7 @@ class Post(models.Model):
                                                                                     'Category')
     description = models.TextField(help_text='body of a single blog post')
     created_at = models.DateTimeField(auto_now_add=True, help_text='blog written date')
-    updated_at = models.DateTimeField(auto_now_add=True, help_text='if any update needed')
+    updated_at = models.DateTimeField(auto_now=True, help_text='last update time')
 
     def __str__(self):
         return self.title
