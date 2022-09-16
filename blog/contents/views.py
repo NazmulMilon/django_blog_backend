@@ -22,7 +22,31 @@ class PostList(APIView):
         return Response(serialize.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class PostDetail(APIView):
+    """ retrieve, update and delete posts """
+    def get_object(self, pk):
+        try:
+            return Post.objects.get(id=pk)
+        except Post.DoesNotExist:
+            raise Http404
 
+    def get(self, request, pk):
+        obj = self.get_object(pk)
+        serialize = PostSerializer(obj)
+        return Response(serialize.data)
+
+    def put(self, request, pk):
+        obj = self.get_object(pk)
+        serialize = PostSerializer(obj, data=request.data)
+        if serialize.is_valid():
+            serialize.save()
+            return Response(serialize.data)
+        return Response(serialize.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        obj = self.get_object(pk)
+        obj.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # from django.http import HttpResponse, JsonResponse

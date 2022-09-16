@@ -3,6 +3,5 @@ from . import views
 
 urlpatterns = [
     path('contents/', views.PostList.as_view()),
-    # path('contents/<int:pk>', views.post_detail),
-    # path('category/', views.category_list),
+    path('contents/<int:id>/', views.PostDetail.as_view()),
 ]
