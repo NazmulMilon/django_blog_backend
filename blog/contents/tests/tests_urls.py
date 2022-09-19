@@ -7,7 +7,10 @@ from ..urls import *
 class PostTest(TestCase):
 
     def test_post_list(self):
-        print("ok")
         url = reverse('post_list')
-        print(url)
+        # print(url)
         self.assertEquals(resolve(url).func.view_class, PostList)
+
+    def test_post_detail(self):
+        url = reverse('post_detail')
+        self.assertEquals(resolve(url).func.view_class, PostDetail)
