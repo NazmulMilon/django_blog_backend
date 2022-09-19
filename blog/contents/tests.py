@@ -40,3 +40,21 @@ class PostTest(TestCase):
     #     obj = Post(author_name=user, title="post title", category_name=category, description="post details")
     #     # obj.save()
     #     self.assertEqual(str(obj), 'post title')
+
+
+# class PPostTest(TestCase):
+#     def test_post_create(self):
+#         user = User.objects.create(username='username', email='email', password='12345')
+#         category_dict = {
+#             'category_name': 'category name',
+#         }
+#         category_obj = Category(**category_dict)
+#
+#         post_dict = {
+#             'author_name': user,
+#             'title': 'post title',
+#             'category_name': category_obj,
+#             'description': 'post details',
+#         }
+#         post_obj = Post(**post_dict)
+#         self.assertEqual(str(post_obj), 'post title')
