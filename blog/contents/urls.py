@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 # from .views import PostList, PostDetail, CategoryList, CategoryDetail
 
+# app_name = 'contents'
 urlpatterns = [
     # path('', views.home_page(), name='home'),
     path('post/', views.PostList.as_view(), name='post_list'),
