@@ -1,15 +1,34 @@
 # from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.test import TestCase
 from ..models import Category, Post
 
 
 class TestCategory(TestCase):
     def test_create_category(self):
-        category_dict={
+        category_dict = {
             "category_name": 'category name',
         }
         obj = Category(**category_dict)
         self.assertEquals(str(obj), 'category name')
+
+
+class TestPost(TestCase):
+    def test_post_create(self):
+        user = User.objects.create(username='username', email='m@gmail.com')
+        category_dict = {
+            "category_name": 'category name',
+        }
+        category_obj = Category.objects.create(**category_dict)
+
+        post_dict = {
+            "author_name": user,
+            "title": 'post title',
+            "category_name": category_obj,
+            "description": 'post details',
+        }
+        post_obj = Post(**post_dict)
+        self.assertEquals(str(post_obj), 'post title')
 
 
 '''Old method to test django models'''
@@ -48,4 +67,3 @@ class TestCategory(TestCase):
 #         todo.save()
 #         self.assertEqual(str(todo), 'Buy milk')
 #
-
