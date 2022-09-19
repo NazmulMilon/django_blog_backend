@@ -1,6 +1,6 @@
 from .models import Post, Category
 from .serializers import PostSerializer, CategorySerializer
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
