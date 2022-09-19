@@ -12,5 +12,9 @@ class PostTest(TestCase):
         self.assertEquals(resolve(url).func.view_class, PostList)
 
     def test_post_detail(self):
-        url = reverse('post_detail')
+        url = reverse('post_detail', args=[1])
         self.assertEquals(resolve(url).func.view_class, PostDetail)
+
+    def test_category_list(self):
+        url = reverse('category_list')
+        self.assertEquals(resolve(url).func.view_class, CategoryList)
