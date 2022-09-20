@@ -21,10 +21,10 @@ from rest_framework import status
 class PostList(APIView):
     """List all post or create posts"""
 
-    # def get(self, request):
-    #     obj = Post.objects.all()
-    #     serialize = PostSerializer(obj, many=True)
-    #     return Response(serialize.data)
+    def get(self, request):
+        obj = Post.objects.all()
+        serialize = PostSerializer(obj, many=True)
+        return Response(serialize.data, status=status.HTTP_201_CREATED)
 
     def post(self, request):
         serialize = PostSerializer(data=request.data)

@@ -35,6 +35,11 @@ class GetAllPostTest(TestCase):
         queryset = Post.objects.all()
 
         serialize = PostSerializer(queryset, many=True)
-        self.assertEqual(response.data, serialize.data)
+
+        print(response.data)
+        print(serialize.data)
+        print(response.status_code)
+        print(status.HTTP_201_CREATED)
+        # self.assertEqual(response.data, serialize.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
