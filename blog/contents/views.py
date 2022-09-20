@@ -1,3 +1,5 @@
+from rest_framework.decorators import api_view
+
 from .models import Post, Category
 from .serializers import PostSerializer, CategorySerializer
 from django.http import Http404, HttpResponse
@@ -6,13 +8,23 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
+# @api_view(['GET', 'POST'])
+# def get_posts(self, request):
+#     if request.method == 'GET':
+#         obj = Post.objects.all()
+#         serialize = PostSerializer(obj, many=True)
+#         return Response(serialize.data)
+#     elif request.method == 'POST':
+#         return Response({})
+#
+
 class PostList(APIView):
     """List all post or create posts"""
 
-    def get(self, request):
-        obj = Post.objects.all()
-        serialize = PostSerializer(obj, many=True)
-        return Response(serialize.data)
+    # def get(self, request):
+    #     obj = Post.objects.all()
+    #     serialize = PostSerializer(obj, many=True)
+    #     return Response(serialize.data)
 
     def post(self, request):
         serialize = PostSerializer(data=request.data)

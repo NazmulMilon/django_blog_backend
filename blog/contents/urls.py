@@ -4,7 +4,7 @@ from . import views
 
 # app_name = 'contents'
 urlpatterns = [
-    # path('', views.home_page(), name='home'),
+    # path('', views.get_posts, name='get_posts'),
     path('post/', views.PostList.as_view(), name='post_list'),
     path('post/<int:pk>/', views.PostDetail.as_view(), name='post_detail'),
     path('category/', views.CategoryList.as_view(), name='category_list'),
