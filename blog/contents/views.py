@@ -66,7 +66,7 @@ class CategoryList(APIView):
     def get(self, request):
         obj = Category.objects.all()
         serialize = CategorySerializer(obj, many=True)
-        return Response(serialize.data)
+        return Response(serialize.data, status=status.HTTP_201_CREATED)
 
     def post(self, request):
         serialize = CategorySerializer(data=request.data)

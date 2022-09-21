@@ -3,9 +3,28 @@ from django.test import TestCase, Client
 from ..models import Category, Post
 from django.urls import reverse, resolve
 from rest_framework import status
-from ..serializers import PostSerializer
+from ..serializers import PostSerializer, CategorySerializer
 
 client = Client()
+
+
+class GetAllCategoryTest(TestCase):
+    def setUp(self):
+        category_dict = {
+            "category_name": 'category name',
+        }
+        Category.objects.create(**category_dict)
+
+    def test_category_list_view(self):
+        response = self.client.get(reverse('category_list'))
+        queryset = Category.objects.all()
+        serialize = CategorySerializer(queryset, many=True)
+        # print(serialize.data)
+        # print(response.data)
+        # print(response.status_code)
+        # print(status.HTTP_201_CREATED)
+        self.assertEqual(response.data, serialize.data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class GetAllPostTest(TestCase):
@@ -41,4 +60,3 @@ class GetAllPostTest(TestCase):
         # print(status.HTTP_201_CREATED)
         self.assertEqual(response.data, serialize.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
