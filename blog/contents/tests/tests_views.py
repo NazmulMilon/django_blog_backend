@@ -4,7 +4,6 @@ from ..models import Category, Post
 from django.urls import reverse, resolve
 from rest_framework import status
 from ..serializers import PostSerializer
-from rest_framework.decorators import api_view
 
 client = Client()
 
@@ -31,15 +30,15 @@ class GetAllPostTest(TestCase):
         # self.setUp()
         # get_api_response
         response = self.client.get(reverse('post_list'))
+
         # get data from database
         queryset = Post.objects.all()
 
         serialize = PostSerializer(queryset, many=True)
-
-        print(response.data)
-        print(serialize.data)
-        print(response.status_code)
-        print(status.HTTP_201_CREATED)
-        # self.assertEqual(response.data, serialize.data)
+        # print(response.data)
+        # print(serialize.data)
+        # print(response.status_code)
+        # print(status.HTTP_201_CREATED)
+        self.assertEqual(response.data, serialize.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
