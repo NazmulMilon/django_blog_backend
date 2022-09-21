@@ -1,5 +1,4 @@
 
-
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from ..models import Category, Post
@@ -29,7 +28,8 @@ class GetAllCategoryTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
-class PostAllCategoryListPost(TestCase):
+class PostAllCategoryListTest(TestCase): # Post is the method name of category list
+
     def setUp(self):
         self.valid_category = {'category_name': 'category_nme'}
         self.invalid_category = {'category_name': ''}
@@ -41,8 +41,21 @@ class PostAllCategoryListPost(TestCase):
 
     def test_invalid_category(self):
         response = client.post('category_list', self.invalid_category)
-        print(response.status_code)
+        # print(response.status_code)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class CategoryDetailAllTest(TestCase):
+    def setUp(self):
+        self.category_obj= Category.objects.create(category_name='category_name')
+        self.category_obj2 = Category.objects.create(category_name='name')
+
+    def test_valid_single_category(self):
+        response = client.get(reverse('category_details', kwargs={'pk': self.category_obj.pk}))
+        queryset = Category.objects.get(pk=self.category_obj.pk)
+        serialize = CategorySerializer(queryset)
+        self.assertEqual(response.data, serialize.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
 class GetAllPostTest(TestCase):
