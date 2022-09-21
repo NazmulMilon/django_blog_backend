@@ -1,4 +1,3 @@
-
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from ..models import Category, Post
@@ -28,7 +27,7 @@ class GetAllCategoryTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
-class PostAllCategoryListTest(TestCase): # Post is the method name of category list
+class AllCategoryListPostTest(TestCase):  # Post is the method name of category list
 
     def setUp(self):
         self.valid_category = {'category_name': 'category_nme'}
@@ -47,14 +46,23 @@ class PostAllCategoryListTest(TestCase): # Post is the method name of category l
 
 class CategoryDetailAllTest(TestCase):
     def setUp(self):
-        self.category_obj= Category.objects.create(category_name='category_name')
-        self.category_obj2 = Category.objects.create(category_name='name')
+        self.category_obj = Category.objects.create(category_name='category name test')
+        self.category_obj2 = Category.objects.create(category_name='category name tests')
+        self.valid_category_name = {
+            'category_name': 'category name',
+        }
 
     def test_valid_single_category(self):
         response = client.get(reverse('category_details', kwargs={'pk': self.category_obj.pk}))
         queryset = Category.objects.get(pk=self.category_obj.pk)
         serialize = CategorySerializer(queryset)
         self.assertEqual(response.data, serialize.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_valid_category_put(self):
+        print("everything ok")
+        print(self.category_obj.pk)
+        response = client.put(reverse('category_details', kwargs={'pk': self.category_obj.pk}), self.valid_category_name)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
