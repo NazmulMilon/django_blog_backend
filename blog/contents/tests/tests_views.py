@@ -83,6 +83,10 @@ class CategoryDetailPutTest(TestCase):
         print("OKKKKKKKKKKKKKKKK")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+    def test_valid_delete_category(self):
+        response = client.delete(reverse('category_details', kwargs={'pk': self.category_ob.pk}))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
 
 class GetAllPostTest(TestCase):
     """ Test module for deleting an existing puppy record """
