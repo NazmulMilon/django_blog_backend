@@ -4,6 +4,8 @@ from ..models import Category, Post
 from django.urls import reverse, resolve
 from rest_framework import status
 from ..serializers import PostSerializer, CategorySerializer
+import json
+from rest_framework.response import Response
 
 client = Client()
 
@@ -68,8 +70,9 @@ class CategoryDetailAllTest(TestCase):
                               self.valid_category_name, content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_category_detail_delete(self):
+    def test_delete_category_detail(self):
         response = client.delete(reverse('category_details', kwargs={'pk': self.category_obj.pk}))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
 class CategoryDetailPutTest(TestCase):
@@ -129,20 +132,34 @@ class GetAllPostTest(TestCase):
 class PostDetailsTest(TestCase):
     def setUp(self):
         user = User.objects.create(username='username')
-        category_name=Category.objects.create(category_name='category name')
+        category_name = Category.objects.create(category_name='category name')
 
         self.post_queryset = Post.objects.create(title='title test name', author_name=user,
                                                  category_name=category_name,
                                                  description='post details')
         self.valid_post_details = {
             'title': 'title test',
-            'author_name': user,
-            'category_name': category_name,
+            'author_name_id': user,
+            'category_name_id': category_name,
             'description': 'post details',
         }
 
     def test_get_single_post_detail(self):
-        response = client.get(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}))
+        response = client.get(reverse('post_detail', kwargs={'pk': self.post_queryset.id}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    
+    # def test_put_single_post_detail(self):
+    #     response = client.put(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}),
+    #                           self.valid_post_details, content_type='application/json')
+    #
+    #     print(" everything is ok")
+    #     print(response.status_code)
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_delete_post_detail(self):
+        response = client.delete(reverse('post_detail', kwargs={'pk': self.post_queryset.id}))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    # def test_something(self):
+    #     response = client.put(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}),
+    #                           data=json.dumps(self.valid_post_details))

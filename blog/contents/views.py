@@ -41,9 +41,9 @@ class PostDetail(APIView):
     def put(self, request, pk):
         obj = self.get_object(pk)
         serialize = PostSerializer(obj, data=request.data)
-        if serialize.is_valid():
+        if serialize.is_valid(raise_exception=True):
             serialize.save()
-            return Response(serialize.data)
+            return Response(serialize.data, status=status.HTTP_200_OK)
         return Response(serialize.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
