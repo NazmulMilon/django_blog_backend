@@ -124,3 +124,25 @@ class GetAllPostTest(TestCase):
         # print(status.HTTP_201_CREATED)
         self.assertEqual(response.data, serialize.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+
+class PostDetailsTest(TestCase):
+    def setUp(self):
+        user = User.objects.create(username='username')
+        category_name=Category.objects.create(category_name='category name')
+
+        self.post_queryset = Post.objects.create(title='title test name', author_name=user,
+                                                 category_name=category_name,
+                                                 description='post details')
+        self.valid_post_details = {
+            'title': 'title test',
+            'author_name': user,
+            'category_name': category_name,
+            'description': 'post details',
+        }
+
+    def test_get_single_post_detail(self):
+        response = client.get(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    
