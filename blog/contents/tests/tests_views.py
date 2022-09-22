@@ -60,13 +60,16 @@ class CategoryDetailAllTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_category_detail_put(self):
-        self.cat_obj=Category.objects.create(category_name='category name test')
-        self.valid_cat_obj={
-            'category_name': 'category name test',
-        }
-        response = client.put(reverse('category_details', kwargs={'pk': self.cat_obj.pk}),
-                              self.valid_cat_obj, content_type='application/json')
+        # self.cat_obj=Category.objects.create(category_name='category name test')
+        # self.valid_cat_obj={
+        #     'category_name': 'category name test',
+        # }
+        response = client.put(reverse('category_details', kwargs={'pk': self.category_obj.pk}),
+                              self.valid_category_name, content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_category_detail_delete(self):
+        response = client.delete(reverse('category_details', kwargs={'pk': self.category_obj.pk}))
 
 
 class CategoryDetailPutTest(TestCase):
