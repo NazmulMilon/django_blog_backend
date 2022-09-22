@@ -83,7 +83,7 @@ class CategoryDetail(APIView):
         serialize = CategorySerializer(obj, data=request.data)
         if serialize.is_valid():
             serialize.save()
-            return Response(serialize.data, status=status.HTTP_204_NO_CONTENT)
+            return Response(serialize.data, status=status.HTTP_200_OK)
         return Response(serialize.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):

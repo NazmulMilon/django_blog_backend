@@ -62,7 +62,23 @@ class CategoryDetailAllTest(TestCase):
     def test_valid_category_put(self):
         print("everything ok")
         print(self.category_obj.pk)
-        response = client.put(reverse('category_details', kwargs={'pk': self.category_obj.pk}), self.valid_category_name)
+        response = client.put(reverse('category_details', kwargs={'pk': self.category_obj.pk}),
+                              self.valid_category_name, content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class CategoryDetailPutTest(TestCase):
+    def setUp(self):
+        self.category_ob = Category.objects.create(category_name='category put')
+        self.valid_category_name = {
+            'category_name': 'category put',
+        }
+
+    def test_valid_category_put(self):
+        response = client.put(reverse('category_details', kwargs={'pk': self.category_ob.pk}),
+                              self.valid_category_name, content_type='application/json')
+        print(response.status_code)
+        print("OKKKKKKKKKKKKKKKK")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
