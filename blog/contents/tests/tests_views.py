@@ -242,3 +242,7 @@ class CommentDetailsTest(TestCase):
                               self.comment_dict,
                               content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_delete_comment_details(self):
+        response = client.delete(reverse('comment_detail', kwargs={'pk': self.comment_queryset.pk}))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
