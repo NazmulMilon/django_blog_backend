@@ -152,8 +152,8 @@ class PostDetailsTest(TestCase):
         response = client.put(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}),
                               self.valid_post_details,
                               content_type='application/json')
-        print(" everything is ok")
-        print(response.status_code)
+        # print(" everything is ok")
+        # print(response.status_code)
         print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -165,3 +165,11 @@ class PostDetailsTest(TestCase):
     # def test_something(self):
     #     response = client.put(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}),
     #                           data=json.dumps(self.valid_post_details))
+
+    def test_put_post_details(self):
+        response = client.put(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}),
+                              self.valid_post_details,
+                              content_type='application/json')
+        # print("another practice")
+        print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
