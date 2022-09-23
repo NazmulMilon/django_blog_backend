@@ -105,6 +105,20 @@ class CommentList(APIView):
             return Response(serialize.data, status=status.HTTP_201_CREATED)
         return Response(serialize.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class CommentDetail(APIView):
+    def get_obj(self, pk):
+        try:
+            return Comment.objects.get(pk=pk)
+        except Comment.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        category_obj = self.get_obj(pk)
+        serialize = CommentSerializer(category_obj)
+        return Response(serialize.data, status=status.HTTP_200_OK)
+
+
 # from django.http import HttpResponse, JsonResponse
 # from .models import Post, Category
 # from .serializers import PostSerializer, CategorySerializer
