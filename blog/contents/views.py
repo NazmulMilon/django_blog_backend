@@ -118,6 +118,14 @@ class CommentDetail(APIView):
         serialize = CommentSerializer(category_obj)
         return Response(serialize.data, status=status.HTTP_200_OK)
 
+    def put(self, request, pk):
+        queryset = self.get_obj(pk)
+        serialize = CommentSerializer(queryset, data=request.data)
+        if serialize.is_valid():
+            serialize.save()
+            return Response(serialize.data, status=status.HTTP_200_OK)
+        return Response(serialize.errors, status=status.HTTP_404_NOT_FOUND)
+
 
 # from django.http import HttpResponse, JsonResponse
 # from .models import Post, Category
