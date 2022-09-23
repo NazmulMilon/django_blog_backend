@@ -173,3 +173,7 @@ class PostDetailsTest(TestCase):
         # print("another practice")
         print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_delete_post_details(self):
+        response = client.delete(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
