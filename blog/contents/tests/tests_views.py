@@ -45,6 +45,10 @@ class AllCategoryListPostTest(TestCase):  # Post is the method name of category 
         # print(response.status_code)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_category_post(self):
+        response = client.post(reverse('category_list'), self.valid_category)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
 
 class CategoryDetailAllTest(TestCase):
     def setUp(self):
