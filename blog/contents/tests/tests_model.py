@@ -1,7 +1,7 @@
 # from django.contrib.auth.models import User
 from django.contrib.auth.models import User
 from django.test import TestCase
-from ..models import Category, Post
+from ..models import Category, Post, Comment
 
 
 class TestCategory(TestCase):
@@ -29,6 +29,32 @@ class TestPost(TestCase):
         }
         post_obj = Post(**post_dict)
         self.assertEquals(str(post_obj), 'post title')
+
+
+class TestComment(TestCase):
+    def test_comment_create(self):
+        user = User.objects.create_user(username='username', email='m@gmail.com', password='12345')
+        category_dict = {
+            "category_name": 'category name',
+        }
+        category_queryset = Category.objects.create(**category_dict)
+
+        post_dict = {
+            "title": 'post title test',
+            "author_name": user,
+            "category_name": category_queryset,
+            "description": 'description test',
+        }
+        post_queryset = Post.objects.create(**post_dict)
+
+        comment_dict = {
+            "posts": post_queryset,
+            "comment_detail": 'comment detail test',
+            "commenter": user,
+        }
+
+        comment_queryset = Comment(**comment_dict)
+        self.assertEquals(str(comment_queryset), 'comment detail test')
 
 
 '''Old method to test django models'''
