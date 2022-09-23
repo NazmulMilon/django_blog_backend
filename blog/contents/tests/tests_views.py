@@ -45,7 +45,7 @@ class AllCategoryListPostTest(TestCase):  # Post is the method name of category 
         # print(response.status_code)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_category_post(self):
+    def test_category_list_post(self):
         response = client.post(reverse('category_list'), self.valid_category)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -108,13 +108,13 @@ class GetAllPostTest(TestCase):
         }
         category = Category.objects.create(**category_dict)
 
-        post_dict = {
+        self.post_dict = {
             "title": 'post title',
-            "author_name": user,
-            "category_name": category,
+            "author_name": user.id,
+            "category_name": category.id,
             "description": 'post details',
         }
-        Post.objects.create(**post_dict)
+        # Post.objects.create(**post_dict)
 
     def test_get_all_post(self):
         # self.setUp()
@@ -130,6 +130,10 @@ class GetAllPostTest(TestCase):
         # print(response.status_code)
         # print(status.HTTP_201_CREATED)
         self.assertEqual(response.data, serialize.data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_post_list_post(self):
+        response = client.post(reverse('post_list'), self.post_dict)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
