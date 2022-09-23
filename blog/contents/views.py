@@ -98,6 +98,13 @@ class CommentList(APIView):
         serialize = CommentSerializer(queryset, many=True)
         return Response(serialize.data, status=status.HTTP_201_CREATED)
 
+    def post(self, request):
+        serialize = CommentSerializer(data=request.data)
+        if serialize.is_valid():
+            serialize.save()
+            return Response(serialize.data, status=status.HTTP_201_CREATED)
+        return Response(serialize.errors, status=status.HTTP_400_BAD_REQUEST)
+
 # from django.http import HttpResponse, JsonResponse
 # from .models import Post, Category
 # from .serializers import PostSerializer, CategorySerializer
