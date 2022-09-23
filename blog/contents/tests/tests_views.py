@@ -205,23 +205,22 @@ class GetALLCommentListTest(TestCase):
         post_queryset = Post.objects.create(**post_dict)
 
         self.comment_dict = {
-            "posts": post_queryset,
+            "posts": post_queryset.id,
             "comment_detail": 'description test',
-            "commenter": user,
+            "commenter": user.id,
         }
         # Comment.objects.create(**comment_dict)
 
-    def test_get_all_comment(self):
+    def test_comment_list_get(self):
         response = self.client.get(reverse('comment_list'))
         queryset = Comment.objects.all()
         serialize = CommentSerializer(queryset, many=True)
         self.assertEqual(response.data, serialize.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # def test_post_comment_list(self):
-    #     response = self.client.post(reverse('comment_list'), self.comment_dict)
-    #     # queryset = Comment.objects.create()
-    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    def test_comment_list_post(self):
+        response = client.post(reverse('comment_list'), self.comment_dict)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class CommentDetailsTest(TestCase):
