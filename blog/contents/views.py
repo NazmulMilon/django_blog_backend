@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 
-from .models import Post, Category
-from .serializers import PostSerializer, CategorySerializer
+from .models import Post, Category, Comment
+from .serializers import PostSerializer, CategorySerializer, CommentSerializer
 from django.http import Http404, HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -90,6 +90,13 @@ class CategoryDetail(APIView):
         obj = self.get_obj(pk)
         obj.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class CommentList(APIView):
+    def get(self, request):
+        queryset = Comment.objects.all()
+        serialize = CommentSerializer(queryset, many=True)
+        return Response(serialize.data, status=status.HTTP_201_CREATED)
 
 # from django.http import HttpResponse, JsonResponse
 # from .models import Post, Category
