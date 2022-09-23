@@ -96,7 +96,7 @@ class CommentList(APIView):
     def get(self, request):
         queryset = Comment.objects.all()
         serialize = CommentSerializer(queryset, many=True)
-        return Response(serialize.data, status=status.HTTP_201_CREATED)
+        return Response(serialize.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         serialize = CommentSerializer(data=request.data)

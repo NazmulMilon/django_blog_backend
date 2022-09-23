@@ -179,7 +179,7 @@ class PostDetailsTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
-class GetALLCommentTest(TestCase):
+class GetALLCommentListTest(TestCase):
     def setUp(self):
         user = User.objects.create_user(username='username', email='m@gmail.com', password='12345')
         category_dict = {
@@ -208,4 +208,30 @@ class GetALLCommentTest(TestCase):
         queryset = Comment.objects.all()
         serialize = CommentSerializer(queryset, many=True)
         self.assertEqual(response.data, serialize.data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    # def test_post_all_comment(self):
+    #     response = self.client.post(reverse('comment_list'))
+    #     queryset = Comment.objects.create()
+
+
+class CommentDetailsTest(TestCase):
+    def setUp(self):
+        user = User.objects.create_user(username='username', email='m@gmail.com')
+        category_queryset = Category.objects.create(category_name='ctegory name')
+        post_queryset = Post.objects.create(title='title test', author_name=user, category_name=category_queryset,
+                                            description='post details test')
+        self.comment_queryset = Comment.objects.create(posts=post_queryset, comment_detail='comment details test',
+                                                       commenter=user)
+
+        self.comment_dict = {
+            "posts": post_queryset,
+            "comment_detail": 'comment description test',
+            "commenter": user,
+        }
+
+        # comment_queryset = Comment.objects.create(**comment_dict)
+
+    def test_single_comment_detail(self):
+        response = client.get(reverse('comment_detail', kwargs={'pk': self.comment_queryset.pk}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
