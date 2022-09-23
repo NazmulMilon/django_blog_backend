@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
-from ..models import Category, Post
+from ..models import Category, Post, Comment
 from django.urls import reverse, resolve
 from rest_framework import status
-from ..serializers import PostSerializer, CategorySerializer
+from ..serializers import PostSerializer, CategorySerializer, CommentSerializer
 import json
 from rest_framework.response import Response
 
@@ -177,3 +177,35 @@ class PostDetailsTest(TestCase):
     def test_delete_post_details(self):
         response = client.delete(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+
+class GetALLCommentTest(TestCase):
+    def setUp(self):
+        user = User.objects.create_user(username='username', email='m@gmail.com', password='12345')
+        category_dict = {
+            "category_name": 'category name',
+        }
+        category_queryset = Category.objects.create(**category_dict)
+
+        post_dict = {
+            "title": 'title test',
+            "author_name": user,
+            "category_name": category_queryset,
+            "description": 'post details',
+
+        }
+        post_queryset = Post.objects.create(**post_dict)
+
+        comment_dict = {
+            "posts": post_queryset,
+            "comment_detail": 'description test',
+            "commenter": user,
+        }
+        comment_queryset = Comment.objects.create(**comment_dict)
+
+    def test_get_all_comment(self):
+        response = self.client.get(reverse('comment_list'))
+        queryset = Comment.objects.all()
+        serialize = CommentSerializer(queryset, many=True)
+        self.assertEqual(response.data, serialize.data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
