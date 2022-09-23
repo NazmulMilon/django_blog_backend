@@ -139,8 +139,8 @@ class PostDetailsTest(TestCase):
                                                  description='post details')
         self.valid_post_details = {
             'title': 'title test',
-            'author_name_id': user,
-            'category_name_id': category_name,
+            'author_name': user.id,
+            'category_name': category_name.id,
             'description': 'post details',
         }
 
@@ -148,13 +148,15 @@ class PostDetailsTest(TestCase):
         response = client.get(reverse('post_detail', kwargs={'pk': self.post_queryset.id}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # def test_put_single_post_detail(self):
-    #     response = client.put(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}),
-    #                           self.valid_post_details, content_type='application/json')
-    #
-    #     print(" everything is ok")
-    #     print(response.status_code)
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    def test_put_single_post_detail(self):
+        response = client.put(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}),
+                              self.valid_post_details,
+                              content_type='application/json')
+        print(" everything is ok")
+        print(response.status_code)
+        print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_delete_post_detail(self):
         response = client.delete(reverse('post_detail', kwargs={'pk': self.post_queryset.id}))
