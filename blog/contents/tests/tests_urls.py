@@ -1,6 +1,6 @@
 from django.urls import resolve, reverse
 from django.test import TestCase
-from ..views import PostList, PostDetail, CategoryDetail, CategoryList
+from ..views import PostList, PostDetail, CategoryDetail, CategoryList, CommentList
 from ..urls import *
 
 
@@ -22,3 +22,8 @@ class PostTest(TestCase):
     def test_category_detail(self):
         url = reverse('category_details', args=[100])
         self.assertEquals(resolve(url).func.view_class, CategoryDetail)
+
+    def test_comment_list(self):
+        url = reverse('category_list', args=[150000])
+        self.assertEquals(resolve(url).func.view_class, CommentList)
+
