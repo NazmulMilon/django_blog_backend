@@ -24,6 +24,16 @@ class Post(models.Model):
     def __str__(self):
         return self.title
 
+
+class Comment(models.Model):
+    posts = models.ForeignKey(Post, on_delete=models.CASCADE, help_text='post details')
+    comment_detail = models.CharField(max_length=200, help_text='comment body')
+    commenter = models.ForeignKey(User, on_delete=models.CASCADE, help_text='person who comment')
+    created_at = models.DateTimeField(auto_now_add=True, help_text='comment written time')
+    updated_at = models.DateTimeField(auto_now=True, help_text='comment updated time')
+
+    def __str__(self):
+        return self.comment_detail
 #
 # class Todo(models.Model):
 #     title = models.CharField(max_length=255)
