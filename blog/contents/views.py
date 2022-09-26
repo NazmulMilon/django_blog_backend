@@ -153,6 +153,10 @@ class ReplyDetail(APIView):
         except Reply.DoesNotExist:
             raise Http404
 
+    def get(self, request, pk):
+        reply_obj = self.get_obj(pk)
+        serialize = ReplySerializer(reply_obj)
+        return Response(serialize.data, status=status.HTTP_200_OK)
 
 
 
