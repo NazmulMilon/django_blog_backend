@@ -318,9 +318,15 @@ class ReplyDetailTest(TestCase):
         }
         comment_queryset = Comment.objects.create(**comment_dict)
 
-        self.reply_queryset = {
+        self.reply_queryset = Reply.objects.create(comment=comment_queryset, reply_detail='reply details test',
+                                                   replier=user)
+        self.reply_dict = {
             "comment": comment_queryset.id,
-            "description": 'reply details test',
+            "reply_detail": 'reply details test',
             "replier": user.id,
-            
+
         }
+
+    def test_reply_detail_get(self):
+        response = client.get(reverse('reply_detail', kwargs={'pk': self.reply_queryset.pk}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
