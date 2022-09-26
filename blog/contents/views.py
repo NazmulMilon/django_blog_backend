@@ -127,7 +127,7 @@ class CommentDetail(APIView):
         return Response(serialize.errors, status=status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, pk):
-        queryset= self.get_obj(pk)
+        queryset = self.get_obj(pk)
         queryset.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 

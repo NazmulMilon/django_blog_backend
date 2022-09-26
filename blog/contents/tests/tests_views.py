@@ -231,7 +231,6 @@ class CommentDetailsTest(TestCase):
                                             description='post details test')
         self.comment_queryset = Comment.objects.create(posts=post_queryset, comment_detail='comment details test',
                                                        commenter=user)
-
         self.comment_dict = {
             "posts": post_queryset.id,
             "comment_detail": 'comment description test',
@@ -253,3 +252,6 @@ class CommentDetailsTest(TestCase):
     def test_delete_comment_details(self):
         response = client.delete(reverse('comment_detail', kwargs={'pk': self.comment_queryset.pk}))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+
+    # def comment_method(self):
