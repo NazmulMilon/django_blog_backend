@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
-from ..models import Category, Post, Comment,Reply
+from ..models import Category, Post, Comment, Reply
 from django.urls import reverse, resolve
 from rest_framework import status
-from ..serializers import PostSerializer, CategorySerializer, CommentSerializer,ReplySerializer
+from ..serializers import PostSerializer, CategorySerializer, CommentSerializer, ReplySerializer
 import json
 from rest_framework.response import Response
 
@@ -262,7 +262,7 @@ class ReplyListTest(TestCase):
         }
         category_queryset = Category.objects.create(**category_dict)
 
-        post_dict ={
+        post_dict = {
             "title": 'title test',
             "author_name": user,
             "category_name": category_queryset,
@@ -277,7 +277,7 @@ class ReplyListTest(TestCase):
         }
         comment_queryset = Comment.objects.create(**comment_dict)
 
-        self.reply_queryset ={
+        self.reply_queryset = {
             "comment": comment_queryset.id,
             "reply_detail": 'reply description',
             "replier": user.id,
@@ -293,3 +293,34 @@ class ReplyListTest(TestCase):
     def test_reply_post_list(self):
         response = client.post(reverse('reply_list'), self.reply_queryset)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+
+class ReplyDetailTest(TestCase):
+    def setUp(self):
+        user = User.objects.create_user(username='username', email='m@gmail.com', password='12345')
+        category_dict = {
+            "category_name": 'category_name',
+        }
+        category_queryset = Category.objects.create(**category_dict)
+
+        post_dict = {
+            "title": 'title test',
+            "author_name": user,
+            "category_name": category_queryset,
+            "description": 'post details',
+        }
+        post_queryset = Post.objects.create(**post_dict)
+
+        comment_dict = {
+            "posts": post_queryset,
+            "comment_detail": 'comment detail test',
+            "commenter": user,
+        }
+        comment_queryset = Comment.objects.create(**comment_dict)
+
+        self.reply_queryset = {
+            "comment": comment_queryset.id,
+            "description": 'reply details test',
+            "replier": user.id,
+            
+        }
