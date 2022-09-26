@@ -14,6 +14,7 @@ urlpatterns = [
     path('comment/<int:pk>/', views.CommentDetail.as_view(), name='comment_detail'),
 
     path('reply/', views.ReplyList.as_view(), name='reply_list'),
+    path('reply/<int:pk>/', views.ReplyDetail.as_view(), name='reply_detail'),
 
 
 
