@@ -27,13 +27,24 @@ class Post(models.Model):
 
 class Comment(models.Model):
     posts = models.ForeignKey(Post, on_delete=models.CASCADE, help_text='post details')
-    comment_detail = models.CharField(max_length=200, help_text='comment body')
+    comment_detail = models.CharField(max_length=500, help_text='comment body')
     commenter = models.ForeignKey(User, on_delete=models.CASCADE, help_text='person who comment')
     created_at = models.DateTimeField(auto_now_add=True, help_text='comment written time')
     updated_at = models.DateTimeField(auto_now=True, help_text='comment updated time')
 
     def __str__(self):
         return self.comment_detail
+
+
+class Reply(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, help_text='write reply for comment')
+    reply_detail = models.CharField(max_length=500)
+    replier = models.ForeignKey(User, on_delete=models.CASCADE, help_text='person who reply the commenter')
+    created_at = models.DateTimeField(auto_now=True, help_text='reply written time')
+    updated_at = models.DateTimeField(auto_now_add=True, help_text='last updated time ')
+
+    def __str__(self):
+        return self.reply_detail
 #
 # class Todo(models.Model):
 #     title = models.CharField(max_length=255)
