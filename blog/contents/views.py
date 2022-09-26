@@ -144,6 +144,17 @@ class ReplyList(APIView):
             serialize.save()
             return Response(serialize.data, status=status.HTTP_201_CREATED)
         return Response(serialize.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ReplyDetail(APIView):
+    def get_obj(self, pk):
+        try:
+            return Reply.objects.get(pk=pk)
+        except Reply.DoesNotExist:
+            raise Http404
+
+
+
 # from django.http import HttpResponse, JsonResponse
 # from .models import Post, Category
 # from .serializers import PostSerializer, CategorySerializer
