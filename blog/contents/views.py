@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 
-from .models import Post, Category, Comment
-from .serializers import PostSerializer, CategorySerializer, CommentSerializer
+from .models import Post, Category, Comment, Reply
+from .serializers import PostSerializer, CategorySerializer, CommentSerializer, ReplySerializers
 from django.http import Http404, HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -131,6 +131,12 @@ class CommentDetail(APIView):
         queryset.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+class ReplyList(APIView):
+    def get(self, request):
+        queryset = Reply.objects.all()
+        serialize = ReplySerializers(queryset, many=True)
+        return Response(serialize.data, status=status.HTTP_200_OK)
 
 # from django.http import HttpResponse, JsonResponse
 # from .models import Post, Category
