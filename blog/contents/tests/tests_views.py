@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
-from ..models import Category, Post, Comment
+from ..models import Category, Post, Comment,Reply
 from django.urls import reverse, resolve
 from rest_framework import status
-from ..serializers import PostSerializer, CategorySerializer, CommentSerializer
+from ..serializers import PostSerializer, CategorySerializer, CommentSerializer,ReplySerializer
 import json
 from rest_framework.response import Response
 
@@ -254,4 +254,39 @@ class CommentDetailsTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
+class ReplyListTest(TestCase):
+    def setUp(self):
+        user = User.objects.create_user(username='user name', email='m@gmail.com', password='12345')
+        category_dict = {
+            "category_name": 'category name',
+        }
+        category_queryset = Category.objects.create(**category_dict)
+
+        post_dict ={
+            "title": 'title test',
+            "author_name": user,
+            "category_name": category_queryset,
+            "description": 'write details test',
+        }
+        post_queryset = Post.objects.create(**post_dict)
+
+        comment_dict = {
+            "posts": post_queryset,
+            "comment_detail": 'comment description',
+            "commenter": user,
+        }
+        comment_queryset = Comment.objects.create(**comment_dict)
+
+        self.reply_queryset ={
+            "comment": comment_queryset,
+            "reply_detail": 'reply description',
+            "replier": user,
+        }
+
+    def test_reply_get_list(self):
+        response = client.get(reverse('reply_list'))
+        queryset = Reply.objects.all()
+        serialize = ReplySerializer(queryset, many=True)
+        self.assertEqual(response.data, serialize.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
     # def comment_method(self):
