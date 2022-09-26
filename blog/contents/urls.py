@@ -13,6 +13,8 @@ urlpatterns = [
     path('comment/', views.CommentList.as_view(), name='comment_list'),
     path('comment/<int:pk>/', views.CommentDetail.as_view(), name='comment_detail'),
 
+    path('reply/', views.ReplyList.as_view(), name='reply_list'),
+
 
 
 ]
