@@ -158,6 +158,14 @@ class ReplyDetail(APIView):
         serialize = ReplySerializer(reply_obj)
         return Response(serialize.data, status=status.HTTP_200_OK)
 
+    def put(self, request, pk):
+        queryset = self.get_obj(pk)
+        serialize = ReplySerializer(queryset, data=request.data)
+        if serialize.is_valid():
+            serialize.save()
+            return Response(serialize.data, status=status.HTTP_200_OK)
+        return Response(serialize.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 # from django.http import HttpResponse, JsonResponse
