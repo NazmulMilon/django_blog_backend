@@ -114,8 +114,8 @@ class CommentDetail(APIView):
             raise Http404
 
     def get(self, request, pk):
-        category_obj = self.get_obj(pk)
-        serialize = CommentSerializer(category_obj)
+        comment_obj = self.get_obj(pk)
+        serialize = CommentSerializer(comment_obj)
         return Response(serialize.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
@@ -152,6 +152,7 @@ class ReplyDetail(APIView):
             return Reply.objects.get(pk=pk)
         except Reply.DoesNotExist:
             raise Http404
+
 
 
 
