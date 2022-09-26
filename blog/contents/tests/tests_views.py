@@ -330,3 +330,13 @@ class ReplyDetailTest(TestCase):
     def test_reply_detail_get(self):
         response = client.get(reverse('reply_detail', kwargs={'pk': self.reply_queryset.pk}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_reply_detail_put(self):
+        response = client.put(reverse('reply_detail', kwargs={'pk': self.reply_queryset.pk}),
+                              self.reply_dict,
+                              content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_reply_detail_delete(self):
+        response = client.delete(reverse('reply_detail', kwargs={'pk': self.reply_queryset.pk}))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
