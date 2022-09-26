@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Post, Comment
+from .models import Category, Post, Comment, Reply
 
 
 # Register your models here.
@@ -22,3 +22,10 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Comment, CommentAdmin)
+
+
+class ReplyAdmin(admin.ModelAdmin):
+    list_display = ['comment', 'reply_detail', 'replier', 'created_at', 'updated_at']
+
+
+admin.site.register(Reply, ReplyAdmin)
