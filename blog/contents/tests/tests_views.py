@@ -278,9 +278,9 @@ class ReplyListTest(TestCase):
         comment_queryset = Comment.objects.create(**comment_dict)
 
         self.reply_queryset ={
-            "comment": comment_queryset,
+            "comment": comment_queryset.id,
             "reply_detail": 'reply description',
-            "replier": user,
+            "replier": user.id,
         }
 
     def test_reply_get_list(self):
@@ -289,4 +289,7 @@ class ReplyListTest(TestCase):
         serialize = ReplySerializer(queryset, many=True)
         self.assertEqual(response.data, serialize.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-    # def comment_method(self):
+
+    def test_reply_post_list(self):
+        response = client.post(reverse('reply_list'), self.reply_queryset)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
