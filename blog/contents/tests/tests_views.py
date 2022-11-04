@@ -89,8 +89,8 @@ class CategoryDetailPutTest(TestCase):
     def test_valid_category_put(self):
         response = client.put(reverse('category_details', kwargs={'pk': self.category_ob.pk}),
                               self.valid_category_name, content_type='application/json')
-        print(response.status_code)
-        print("OKKKKKKKKKKKKKKKK")
+        # print(response.status_code)
+        print("---OOOKKK----")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_valid_delete_category(self):
@@ -162,7 +162,6 @@ class PostDetailsTest(TestCase):
                               content_type='application/json')
         # print(" everything is ok")
         # print(response.status_code)
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -179,7 +178,7 @@ class PostDetailsTest(TestCase):
                               self.valid_post_details,
                               content_type='application/json')
         # print("another practice")
-        print(response.data)
+        # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_post_details(self):
@@ -217,6 +216,11 @@ class GetALLCommentListTest(TestCase):
         serialize = CommentSerializer(queryset, many=True)
         self.assertEqual(response.data, serialize.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # self.assertEqual(response.status_code, status.HTTP_200_OK)
+        print("this is ok")
+        print(response.data)
+        print(response.status_code)
 
     def test_comment_list_post(self):
         response = client.post(reverse('comment_list'), self.comment_dict)

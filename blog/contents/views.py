@@ -171,7 +171,6 @@ class ReplyDetail(APIView):
         queryset.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
 # from django.http import HttpResponse, JsonResponse
 # from .models import Post, Category
 # from .serializers import PostSerializer, CategorySerializer
