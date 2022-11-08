@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'contents',
     'coverage',
     'rest_framework',
+    'systems',
 ]
 
 MIDDLEWARE = [
