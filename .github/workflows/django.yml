@@ -26,7 +26,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r blog/requirements.txt
     - name: Run Tests
-    - run: python blog/manage.py test
-    - run: flake8
-    - run: coverage manage.py blog/test
+      run: |
+        python blog/manage.py test
+        flake8
+        coverage manage.py blog/test
 
