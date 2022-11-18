@@ -28,5 +28,5 @@ jobs:
     - name: Run Tests
       run: |
         python blog/manage.py test
-        coverage run manage.py blog/test
+        coverage run blog/manage.py test
 
