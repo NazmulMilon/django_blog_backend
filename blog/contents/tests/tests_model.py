@@ -2,6 +2,17 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from ..models import Category, Post, Comment, Reply
+import faker
+
+fake = faker.Faker()
+
+
+def check_user():
+    email = fake.email()
+    if User.objects.filter(username=email).exists():
+        check_user()
+    user = User.objects.create_user(username=email, email=email, password='12345')
+    return user
 
 
 class TestCategory(TestCase):
@@ -15,7 +26,7 @@ class TestCategory(TestCase):
 
 class TestPost(TestCase):
     def test_post_create(self):
-        user = User.objects.create(username='username', email='m@gmail.com')
+        user = check_user()
         category_dict = {
             "category_name": 'category name',
         }
@@ -33,63 +44,66 @@ class TestPost(TestCase):
 
 class TestComment(TestCase):
     def test_comment_create(self):
-        user = User.objects.create_user(username='username', email='m@gmail.com', password='12345')
-        category_dict = {
-            "category_name": 'category name',
-        }
-        category_queryset = Category.objects.create(**category_dict)
+        for _ in range(0, 50):
+            user = check_user()
+            category_dict = {
+                "category_name": 'category name',
+            }
+            category_queryset = Category.objects.create(**category_dict)
 
-        post_dict = {
-            "title": 'post title test',
-            "author_name": user,
-            "category_name": category_queryset,
-            "description": 'description test',
-        }
-        post_queryset = Post.objects.create(**post_dict)
+            post_dict = {
+                "title": 'post title test',
+                "author_name": user,
+                "category_name": category_queryset,
+                "description": 'description test',
+            }
+            post_queryset = Post.objects.create(**post_dict)
 
-        comment_dict = {
-            "posts": post_queryset,
-            "comment_detail": 'comment detail test',
-            "commenter": user,
-        }
+            comment_dict = {
+                "posts": post_queryset,
+                "comment_detail": 'comment detail test',
+                "commenter": user,
+            }
 
-        comment_queryset = Comment(**comment_dict)
-        self.assertEquals(str(comment_queryset), 'comment detail test')
+            comment_queryset = Comment(**comment_dict)
+            self.assertEquals(str(comment_queryset), 'comment detail test')
 
 
 class TestReply(TestCase):
     def test_reply_create(self):
-        user = User.objects.create_user(username='username', email='m@gmail.com', password='12345')
-        category_dict = {
-            "category_name": 'category_name',
-        }
-        category_queryset = Category.objects.create(**category_dict)
+        user = check_user()
+        for _ in range(0, 50):
+            category_dict = {
+                "category_name": 'category_name',
+            }
+            category_queryset = Category.objects.create(**category_dict)
 
-        post_dict = {
-            "title": 'write title of post',
-            "author_name": user,
-            "category_name": category_queryset,
-            "description": 'details test',
+            post_dict = {
+                "title": 'write title of post',
+                "author_name": user,
+                "category_name": category_queryset,
+                "description": 'details test',
 
-        }
-        post_queryset = Post.objects.create(**post_dict)
+            }
+            post_queryset = Post.objects.create(**post_dict)
 
-        comment_dict = {
-            "posts": post_queryset,
-            "comment_detail": 'comment description',
-            "commenter": user,
-        }
+            comment_dict = {
+                "posts": post_queryset,
+                "comment_detail": 'comment description',
+                "commenter": user,
+            }
 
-        comment_queryset = Comment.objects.create(**comment_dict)
+            comment_queryset = Comment.objects.create(**comment_dict)
 
-        reply_dict = {
-            "comment": comment_queryset,
-            "reply_detail": 'description of a reply',
-            "replier": user,
-        }
+            reply_dict = {
+                "comment": comment_queryset,
+                "reply_detail": 'description of a reply',
+                "replier": user,
+            }
 
-        reply_queryset = Reply(**reply_dict)
-        self.assertEquals(str(reply_queryset), 'description of a reply')
+            reply_queryset = Reply(**reply_dict)
+            self.assertEquals(str(reply_queryset), 'description of a reply')
+
 
 '''Old method to test django models'''
 #

@@ -1,8 +1,5 @@
-from rest_framework.decorators import api_view
-
 from .models import Post, Category, Comment, Reply
 from .serializers import PostSerializer, CategorySerializer, CommentSerializer, ReplySerializer
-from django.http import Http404, HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -31,7 +28,7 @@ class PostDetail(APIView):
         try:
             return Post.objects.get(pk=pk)
         except Post.DoesNotExist:
-            raise Http404
+            pass
 
     def get(self, request, pk):
         obj = self.get_object(pk)
@@ -48,8 +45,11 @@ class PostDetail(APIView):
 
     def delete(self, request, pk):
         obj = self.get_object(pk)
-        obj.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if obj:
+            obj.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class CategoryList(APIView):
@@ -71,7 +71,7 @@ class CategoryDetail(APIView):
         try:
             return Category.objects.get(pk=pk)
         except Category.DoesNotExist:
-            raise Http404
+            pass
 
     def get(self, request, pk):
         obj = self.get_obj(pk)
@@ -88,8 +88,11 @@ class CategoryDetail(APIView):
 
     def delete(self, request, pk):
         obj = self.get_obj(pk)
-        obj.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if obj:
+            obj.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class CommentList(APIView):
@@ -111,7 +114,7 @@ class CommentDetail(APIView):
         try:
             return Comment.objects.get(pk=pk)
         except Comment.DoesNotExist:
-            raise Http404
+            pass
 
     def get(self, request, pk):
         comment_obj = self.get_obj(pk)
@@ -128,8 +131,11 @@ class CommentDetail(APIView):
 
     def delete(self, request, pk):
         queryset = self.get_obj(pk)
-        queryset.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if queryset:
+            queryset.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class ReplyList(APIView):
@@ -151,7 +157,7 @@ class ReplyDetail(APIView):
         try:
             return Reply.objects.get(pk=pk)
         except Reply.DoesNotExist:
-            raise Http404
+            pass
 
     def get(self, request, pk):
         reply_obj = self.get_obj(pk)
@@ -168,8 +174,11 @@ class ReplyDetail(APIView):
 
     def delete(self, request, pk):
         queryset = self.get_obj(pk)
-        queryset.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if queryset:
+            queryset.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
 # from django.http import HttpResponse, JsonResponse
 # from .models import Post, Category

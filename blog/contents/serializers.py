@@ -22,7 +22,7 @@ class CommentSerializer(serializers.ModelSerializer):
         exclude = ['created_at', 'updated_at']
         # fields = '__all__'
 
-        
+
 class ReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = Reply

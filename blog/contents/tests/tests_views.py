@@ -1,11 +1,9 @@
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from ..models import Category, Post, Comment, Reply
-from django.urls import reverse, resolve
+from django.urls import reverse
 from rest_framework import status
 from ..serializers import PostSerializer, CategorySerializer, CommentSerializer, ReplySerializer
-import json
-from rest_framework.response import Response
 
 client = Client()
 
@@ -18,15 +16,16 @@ class GetAllCategoryTest(TestCase):
         Category.objects.create(**category_dict)
 
     def test_category_list_view(self):
-        response = self.client.get(reverse('category_list'))
-        queryset = Category.objects.all()
-        serialize = CategorySerializer(queryset, many=True)
-        # print(serialize.data)
-        # print(response.data)
-        # print(response.status_code)
-        # print(status.HTTP_201_CREATED)
-        self.assertEqual(response.data, serialize.data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        for _ in range(0, 50):
+            response = self.client.get(reverse('category_list'))
+            queryset = Category.objects.all()
+            serialize = CategorySerializer(queryset, many=True)
+            # print(serialize.data)
+            # print(response.data)
+            # print(response.status_code)
+            # print(status.HTTP_201_CREATED)
+            self.assertEqual(response.data, serialize.data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class AllCategoryListPostTest(TestCase):  # Post is the method name of category list
@@ -36,18 +35,21 @@ class AllCategoryListPostTest(TestCase):  # Post is the method name of category 
         self.invalid_category = {'category_name': ''}
 
     def test_valid_category(self):
-        response = client.post(reverse('category_list'), self.valid_category)
-        # print(response.data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        for _ in range(0, 50):
+            response = client.post(reverse('category_list'), self.valid_category)
+            # print(response.data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_invalid_category(self):
-        response = client.post('category_list', self.invalid_category)
-        # print(response.status_code)
-        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        for _ in range(0, 50):
+            response = client.post('category_list', self.invalid_category)
+            # print(response.status_code)
+            self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_category_list_post(self):
-        response = client.post(reverse('category_list'), self.valid_category)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        for _ in range(0, 50):
+            response = client.post(reverse('category_list'), self.valid_category)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class CategoryDetailAllTest(TestCase):
@@ -59,24 +61,30 @@ class CategoryDetailAllTest(TestCase):
         }
 
     def test_valid_single_category(self):
-        response = client.get(reverse('category_details', kwargs={'pk': self.category_obj.pk}))
-        queryset = Category.objects.get(pk=self.category_obj.pk)
-        serialize = CategorySerializer(queryset)
-        self.assertEqual(response.data, serialize.data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for _ in range(0, 50):
+            response = client.get(reverse('category_details', kwargs={'pk': self.category_obj.pk}))
+            queryset = Category.objects.get(pk=self.category_obj.pk)
+            serialize = CategorySerializer(queryset)
+            self.assertEqual(response.data, serialize.data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_category_detail_put(self):
-        # self.cat_obj=Category.objects.create(category_name='category name test')
-        # self.valid_cat_obj={
-        #     'category_name': 'category name test',
-        # }
-        response = client.put(reverse('category_details', kwargs={'pk': self.category_obj.pk}),
-                              self.valid_category_name, content_type='application/json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for _ in range(0, 50):
+            # self.cat_obj=Category.objects.create(category_name='category name test')
+            # self.valid_cat_obj={
+            #     'category_name': 'category name test',
+            # }
+            response = client.put(reverse('category_details', kwargs={'pk': self.category_obj.pk}),
+                                  self.valid_category_name, content_type='application/json')
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_category_detail(self):
-        response = client.delete(reverse('category_details', kwargs={'pk': self.category_obj.pk}))
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        for _ in range(0, 50):
+            response = client.delete(reverse('category_details', kwargs={'pk': self.category_obj.pk}))
+            if response.status_code == 204:
+                self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+            else:
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 class CategoryDetailPutTest(TestCase):
@@ -87,15 +95,20 @@ class CategoryDetailPutTest(TestCase):
         }
 
     def test_valid_category_put(self):
-        response = client.put(reverse('category_details', kwargs={'pk': self.category_ob.pk}),
-                              self.valid_category_name, content_type='application/json')
-        # print(response.status_code)
-        print("---OOOKKK----")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for _ in range(0, 50):
+            response = client.put(reverse('category_details', kwargs={'pk': self.category_ob.pk}),
+                                  self.valid_category_name, content_type='application/json')
+            # print(response.status_code)
+            print("---OOOKKK----")
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_valid_delete_category(self):
-        response = client.delete(reverse('category_details', kwargs={'pk': self.category_ob.pk}))
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        for _ in range(0, 50):
+            response = client.delete(reverse('category_details', kwargs={'pk': self.category_ob.pk}))
+            if response.status_code == 204:
+                self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+            else:
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 class GetAllPostTest(TestCase):
@@ -117,24 +130,26 @@ class GetAllPostTest(TestCase):
         # Post.objects.create(**post_dict)
 
     def test_get_all_post(self):
-        # self.setUp()
-        # get_api_response
-        response = self.client.get(reverse('post_list'))
+        for _ in range(0, 50):
+            # self.setUp()
+            # get_api_response
+            response = self.client.get(reverse('post_list'))
 
-        # get data from database
-        queryset = Post.objects.all()
+            # get data from database
+            queryset = Post.objects.all()
 
-        serialize = PostSerializer(queryset, many=True)
-        # print(response.data)
-        # print(serialize.data)
-        # print(response.status_code)
-        # print(status.HTTP_201_CREATED)
-        self.assertEqual(response.data, serialize.data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            serialize = PostSerializer(queryset, many=True)
+            # print(response.data)
+            # print(serialize.data)
+            # print(response.status_code)
+            # print(status.HTTP_201_CREATED)
+            self.assertEqual(response.data, serialize.data)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_post_list_post(self):
-        response = client.post(reverse('post_list'), self.post_dict)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        for _ in range(0, 50):
+            response = client.post(reverse('post_list'), self.post_dict)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class PostDetailsTest(TestCase):
@@ -153,37 +168,48 @@ class PostDetailsTest(TestCase):
         }
 
     def test_get_single_post_detail(self):
-        response = client.get(reverse('post_detail', kwargs={'pk': self.post_queryset.id}))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for _ in range(0, 50):
+            response = client.get(reverse('post_detail', kwargs={'pk': self.post_queryset.id}))
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_put_single_post_detail(self):
-        response = client.put(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}),
-                              self.valid_post_details,
-                              content_type='application/json')
-        # print(" everything is ok")
-        # print(response.status_code)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        for _ in range(0, 50):
+            response = client.put(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}),
+                                  self.valid_post_details,
+                                  content_type='application/json')
+            # print(" everything is ok")
+            # print(response.status_code)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            # self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_delete_post_detail(self):
-        response = client.delete(reverse('post_detail', kwargs={'pk': self.post_queryset.id}))
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        for _ in range(0, 50):
+            response = client.delete(reverse('post_detail', kwargs={'pk': self.post_queryset.id}))
+            if response.status_code == 204:
+                self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+            else:
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     # def test_something(self):
     #     response = client.put(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}),
     #                           data=json.dumps(self.valid_post_details))
 
     def test_put_post_details(self):
-        response = client.put(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}),
-                              self.valid_post_details,
-                              content_type='application/json')
-        # print("another practice")
-        # print(response.data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for _ in range(0, 50):
+            response = client.put(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}),
+                                  self.valid_post_details,
+                                  content_type='application/json')
+            # print("another practice")
+            # print(response.data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_post_details(self):
-        response = client.delete(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}))
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        for _ in range(0, 50):
+            response = client.delete(reverse('post_detail', kwargs={'pk': self.post_queryset.pk}))
+            if response.status_code == 204:
+                self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+            else:
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 class GetALLCommentListTest(TestCase):
@@ -211,20 +237,22 @@ class GetALLCommentListTest(TestCase):
         # Comment.objects.create(**comment_dict)
 
     def test_comment_list_get(self):
-        response = self.client.get(reverse('comment_list'))
-        queryset = Comment.objects.all()
-        serialize = CommentSerializer(queryset, many=True)
-        self.assertEqual(response.data, serialize.data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for _ in range(0, 50):
+            response = self.client.get(reverse('comment_list'))
+            queryset = Comment.objects.all()
+            serialize = CommentSerializer(queryset, many=True)
+            self.assertEqual(response.data, serialize.data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        # self.assertEqual(response.status_code, status.HTTP_200_OK)
-        print("this is ok")
-        print(response.data)
-        print(response.status_code)
+            # self.assertEqual(response.status_code, status.HTTP_200_OK)
+            print("this is ok")
+            print(response.data)
+            print(response.status_code)
 
     def test_comment_list_post(self):
-        response = client.post(reverse('comment_list'), self.comment_dict)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        for _ in range(0, 50):
+            response = client.post(reverse('comment_list'), self.comment_dict)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class CommentDetailsTest(TestCase):
@@ -244,18 +272,24 @@ class CommentDetailsTest(TestCase):
         # comment_queryset = Comment.objects.create(**comment_dict)
 
     def test_single_comment_detail(self):
-        response = client.get(reverse('comment_detail', kwargs={'pk': self.comment_queryset.pk}))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for _ in range(0, 50):
+            response = client.get(reverse('comment_detail', kwargs={'pk': self.comment_queryset.pk}))
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_put_comment_details(self):
-        response = client.put(reverse('comment_detail', kwargs={'pk': self.comment_queryset.pk}),
-                              self.comment_dict,
-                              content_type='application/json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for _ in range(0, 50):
+            response = client.put(reverse('comment_detail', kwargs={'pk': self.comment_queryset.pk}),
+                                  self.comment_dict,
+                                  content_type='application/json')
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_comment_details(self):
-        response = client.delete(reverse('comment_detail', kwargs={'pk': self.comment_queryset.pk}))
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        for _ in range(0, 50):
+            response = client.delete(reverse('comment_detail', kwargs={'pk': self.comment_queryset.pk}))
+            if response.status_code == 204:
+                self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+            else:
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 class ReplyListTest(TestCase):
@@ -288,15 +322,17 @@ class ReplyListTest(TestCase):
         }
 
     def test_reply_get_list(self):
-        response = client.get(reverse('reply_list'))
-        queryset = Reply.objects.all()
-        serialize = ReplySerializer(queryset, many=True)
-        self.assertEqual(response.data, serialize.data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for _ in range(0, 50):
+            response = client.get(reverse('reply_list'))
+            queryset = Reply.objects.all()
+            serialize = ReplySerializer(queryset, many=True)
+            self.assertEqual(response.data, serialize.data)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_reply_post_list(self):
-        response = client.post(reverse('reply_list'), self.reply_queryset)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        for _ in range(0, 50):
+            response = client.post(reverse('reply_list'), self.reply_queryset)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 
 class ReplyDetailTest(TestCase):
@@ -332,15 +368,21 @@ class ReplyDetailTest(TestCase):
         }
 
     def test_reply_detail_get(self):
-        response = client.get(reverse('reply_detail', kwargs={'pk': self.reply_queryset.pk}))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for _ in range(0, 50):
+            response = client.get(reverse('reply_detail', kwargs={'pk': self.reply_queryset.pk}))
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_reply_detail_put(self):
-        response = client.put(reverse('reply_detail', kwargs={'pk': self.reply_queryset.pk}),
-                              self.reply_dict,
-                              content_type='application/json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        for _ in range(0, 50):
+            response = client.put(reverse('reply_detail', kwargs={'pk': self.reply_queryset.pk}),
+                                  self.reply_dict,
+                                  content_type='application/json')
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_reply_detail_delete(self):
-        response = client.delete(reverse('reply_detail', kwargs={'pk': self.reply_queryset.pk}))
-        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        for _ in range(0, 50):
+            response = client.delete(reverse('reply_detail', kwargs={'pk': self.reply_queryset.pk}))
+            if response.status_code == 204:
+                self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+            else:
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

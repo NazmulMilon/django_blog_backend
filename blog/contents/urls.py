@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+
 # from .views import PostList, PostDetail, CategoryList, CategoryDetail
 
 # app_name = 'contents'
@@ -15,8 +16,4 @@ urlpatterns = [
 
     path('reply/', views.ReplyList.as_view(), name='reply_list'),
     path('reply/<int:pk>/', views.ReplyDetail.as_view(), name='reply_detail'),
-
-
-
 ]
-
