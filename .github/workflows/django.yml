@@ -28,3 +28,6 @@ jobs:
     - name: Run Tests
       run: |
         python blog/manage.py test
+        flake8
+        coverage manage.py blog/test
+
